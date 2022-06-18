@@ -18,6 +18,7 @@ function LoadSavedToDos() {
 function addToDoinList(event) {
     event.preventDefault();
     const toDo = toDoInput.value;
+    toDoInput.value = "";
     const toDoId = Object.keys(toDos).length;
     toDos[toDoId] = toDo;
     paintToDo(toDoId, toDo);
@@ -40,7 +41,21 @@ function paintToDo(id, toDo) {
 function deleteToDo(event) {
     const toDoId = event.target.parentNode.id;
     delete toDos[toDoId];
-    
+/*     const deleteToDoDOM = document.getElementById(toDoId);
+    toDoList.removeChild(deleteToDoDOM); */
+    const toDoValueList = Object.values(toDos);
+    let emptyDic = {};
+    let i = 0;
+    toDoValueList.forEach(function (value) {
+        emptyDic[i] = value;
+        i++;
+    });
+    toDos = emptyDic;
+    localStorage.setItem("toDos", JSON.stringify(toDos));
+    while (toDoList.hasChildNodes() ){
+        toDoList.removeChild(toDoList.firstChild);       
+    }
+    LoadSavedToDos();
 }
 
 let toDos = LoadSavedToDos();
